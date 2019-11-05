@@ -21,7 +21,7 @@ Para usufruir o conteúdo deste repositório, precisa-se está familiarizado com
 ## Instruções
 
 - [Sobre YT_MUSIC](#Sobre-YT_MUSIC)
-- [Configuração - youtube-dl](#Configuração-youtube-dl)
+- [Configuração - youtube-dl](#Configuração---youtube-dl)
 - [Código-fonte](#Código-fonte)
 - [Informações do Desenvolvedor](#Informações-do-Desenvolvedor)
 

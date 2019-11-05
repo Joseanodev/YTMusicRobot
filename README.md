@@ -20,10 +20,10 @@ Para usufruir o conteúdo deste repositório, precisa-se está familiarizado com
 
 ## Instruções
 
-- [Sobre YT_MUSIC](#sobre-yt-music)
-- [Configuração - youtube-dl](#configuração-youtube-dl)
-- [Código-fonte](#código-fonte)
-- [Informações do Desenvolvedor](#informações-do-desenvolvedor)
+- [Sobre YT_MUSIC](#Sobre-YT_MUSIC)
+- [Configuração - youtube-dl](#Configuração-youtube-dl)
+- [Código-fonte](#Código-fonte)
+- [Informações do Desenvolvedor](#Informações-do-Desenvolvedor)
 
 ## Sobre YT_MUSIC
 

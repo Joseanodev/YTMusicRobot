@@ -32,7 +32,7 @@ Resumindo é um bot para Telegram que baixa áudios MP3 de alta qualidade de ví
 
 ## Configuração - youtube-dl
 
-As configurações do programa **youtube-dl** ficam no diretório `/etc` no arquivo `youtube-dl.conf`, onde contém as opções definida para o YouTube Music.
+As configurações do programa **youtube-dl** ficam no diretório `/etc` no arquivo `youtube-dl.conf`, onde contém as opções definida para o YouTube Music.  
 Você pode personalizar de acordo com sua preferência editando o arquivo `/etc/youtube-dl.conf`.
 
 Para obter as configurações execute:

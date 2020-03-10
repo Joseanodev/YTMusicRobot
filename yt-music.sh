@@ -3,7 +3,7 @@
 #
 # Autor:	Joseano Sousa
 #
-# Versão:	v1.0
+# Versão:	v1.5
 #
 # Data:		10-03-2020
 #
@@ -12,7 +12,7 @@
 #		Baixa áudios em alta qualidade de
 #		vídeos ou playlists do YouTube.
 #
-# Uso:		./YT-MUSIC.sh
+# Uso:		./yt-music.sh
 #
 
 # Importando API - (Passe o caminho de sua API)
@@ -39,12 +39,12 @@ function download_url()
 	re_url='https?://w*\.?youtu\.?be(\.com)?/(watch\?v=|playlist\?list=)?([a-zA-Z0-9_-]+)'
 	if [[ ${message_text[$id]} =~ $re_url ]]; then
 		temp_path=$(mktemp -d) && cd $temp_path
-		if audio="$(grep ${BASH_REMATCH[3]} $HOME/YT_MUSIC/audios)"; then
+		if audio="$(grep ${BASH_REMATCH[3]} $HOME/YTMusicRobot/audios)"; then
 			ShellBot.sendAudio --chat_id ${message_chat_id[$id]} --audio ${audio##* }
 		elif [[ ${BASH_REMATCH[2]} = "playlist?list=" ]]; then
 			for audio_id in $(youtube-dl --ignore-config --ignore-errors --flat-playlist --get-id $BASH_REMATCH[3]); do
 				audio="$(grep ${BASH_REMATCH[3]} $HOME/YT_MUSIC/audios)" && ShellBot.sendAudio --chat_id ${message_chat_id[$id]} --audio ${audio##* } && continue
-				youtube-dl --config-location $HOME/YT_MUSIC/youtube-dl.conf -- $audio_id
+				youtube-dl --config-location $HOME/YTMusicRobot/youtube-dl.conf -- $audio_id
 				audio_path="$(find $temp_path -name *$audio_id.mp3)"
 				[[ -a $audio_path ]] || continue
 				ShellBot.sendAudio --chat_id ${message_chat_id[$id]} --audio @$audio_path
@@ -53,7 +53,7 @@ function download_url()
 			rm -fr $temp_path
 		else
 			audio_id="${BASH_REMATCH[3]}"
-			youtube-dl --config-location $HOME/YT-MUSIC/youtube-dl.conf "$BASH_REMATCH"
+			youtube-dl --config-location $HOME/YTMusicRobot/youtube-dl.conf "$BASH_REMATCH"
 			audio_path=@$(find $temp_path -name *$audio_id.mp3)
 			ShellBot.sendAudio --chat_id ${message_chat_id[$id]} --audio $audio_path
 			echo "$audio_id ${return[audio_file_id]}" >> $HOME/YTMusicRobot/audios
@@ -76,7 +76,7 @@ while :; do
 	# Verifica e salva informações do usuário.
 	grep -sqw ${message_chat_id[$id]} $HOME/YTMusicRobot/users || echo "${message_chat_id[$id]} ${message_chat_first_name[$id]} ${message_chat_username[$id]:-null}" >> $PWD/users
 
-
+	# Analisa tipo de mensagem a ser processada.
 	case ${message_entities_type[id]} in
 		url) download_url ;;
 		bot_command) hello_bot ;;

@@ -16,10 +16,10 @@ Para usufruir o conteúdo deste repositório, precisa-se está familiarizado com
 
 	O ShellBot.sh é uma API desenvolvida em shell script que permite a criação de bot's na plataforma Telegram.
 
-## Instruções
+## Menu
 
 - [Sobre YT-MUSIC](#Sobre-YT-MUSIC)
-- [Configuração - youtube-dl](#Configuração---youtube-dl)
+- [Configuração - youtube-dl](#Configuração-youtube-dl)
 - [Código-fonte](#Código-fonte)
 - [Informações do Desenvolvedor](#Informações-do-Desenvolvedor)
 
@@ -30,12 +30,8 @@ Resumindo é um bot para Telegram que baixa áudios MP3 de alta qualidade de ví
 
 ## Configuração - youtube-dl
 
-As configurações do programa **youtube-dl** ficam no diretório `/etc` no arquivo `youtube-dl.conf`, onde contém as opções definida para o YouTube Music.  
-Você pode personalizar de acordo com sua preferência editando o arquivo `/etc/youtube-dl.conf`.
-
-Para obter as configurações execute:
-
-	sudo wget  https://raw.githubusercontent.com/Joseanodev/YTMusicRobot/master/youtube-dl.conf -O /etc/youtube-dl.conf
+As configurações do programa **youtube-dl** definida para o bot é baixdo junto ao código-fonte, no arquivo nomeado como `youtube-dl.conf`.  
+> Você pode personalizar e criar um **Pull requests** para colaborar e melhorar este repositório, editando o arquivo `youtube-dl.conf`.
 
 ## Código-fonte
 
@@ -45,7 +41,7 @@ Baixe o código-fonte deste repositório:
 
 ## Informações do Desenvolvedor
 
-**Versão:** 1.0  
+**Versão:** 1.5  
 **Desenvolvedor:** Joseano Sousa  
 **E-mail:** joseanodev@gmail.com  
 **Telegram:** [@joseanodev](https://t.me/joseanodev)

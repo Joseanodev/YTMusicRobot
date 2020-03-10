@@ -1,3 +1,6 @@
+# Ignore esse arquivo
+.gitignore
+
 # Ignore arquivos criados na execução
 audios
 users

@@ -19,7 +19,7 @@
 source ShellBot.sh
 
 # Token do bot
-bot_token="$(< .token)"
+bot_token="$(<.token)"
 
 # Inicializando o bot
 ShellBot.init --token $bot_token --return map --monitor

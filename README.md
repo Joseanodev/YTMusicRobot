@@ -19,7 +19,7 @@ Para usufruir o conteúdo deste repositório, precisa-se está familiarizado com
 ## Menu
 
 - [Sobre YT-MUSIC](#Sobre-YT-MUSIC)
-- [Configuração - youtube-dl](#Configuração-youtube-dl)
+- [Configuração - youtube-dl](#Configuração---youtube-dl)
 - [Código-fonte](#Código-fonte)
 - [Informações do Desenvolvedor](#Informações-do-Desenvolvedor)
 
@@ -30,8 +30,8 @@ Resumindo é um bot para Telegram que baixa áudios MP3 de alta qualidade de ví
 
 ## Configuração - youtube-dl
 
-As configurações do programa **youtube-dl** definida para o bot é baixdo junto ao código-fonte, no arquivo nomeado como `youtube-dl.conf`.  
-> Você pode personalizar e criar um **Pull requests** para colaborar e melhorar este repositório, editando o arquivo `youtube-dl.conf`.
+O arquivo de configuração do programa **youtube-dl** é baixado junto ao código-fonte, nomeado como `youtube-dl.conf`.  
+> Você pode criar um **Pull requests**, para melhorar e colaborar com as configurações, editando o arquivo `youtube-dl.conf`.
 
 ## Código-fonte
 

@@ -31,7 +31,7 @@ Resumindo é um bot para Telegram que baixa áudios MP3 de alta qualidade de ví
 ## Configuração - youtube-dl
 
 O arquivo de configuração do programa **youtube-dl** é baixado junto ao código-fonte, nomeado como `youtube-dl.conf`.  
-> Você pode criar um **Pull requests**, para melhorar e colaborar com as configurações, editando o arquivo `youtube-dl.conf`.
+> Você pode criar um **Pull requests**, para melhorar e colaborar com a configuração, editando `youtube-dl.conf`.
 
 ## Código-fonte
 

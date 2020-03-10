@@ -5,7 +5,7 @@
 #
 # Versão:	v1.0
 #
-# Data:		26-11-2019
+# Data:		10-03-2020
 #
 #
 # Descrição:	Bot para Telegram feito em Shell.
@@ -18,7 +18,7 @@
 # Importando API - (Passe o caminho de sua API)
 source ShellBot.sh
 
-# Token do bot
+# Token do bot - (Coloque sua token)
 bot_token="$(<.token)"
 
 # Inicializando o bot
@@ -56,7 +56,7 @@ function download_url()
 			youtube-dl --config-location $HOME/YT-MUSIC/youtube-dl.conf "$BASH_REMATCH"
 			audio_path=@$(find $temp_path -name *$audio_id.mp3)
 			ShellBot.sendAudio --chat_id ${message_chat_id[$id]} --audio $audio_path
-			echo "$audio_id ${return[audio_file_id]}" >> $PWD/audios
+			echo "$audio_id ${return[audio_file_id]}" >> $HOME/YTMusicRobot/audios
 			rm -fr $temp_path
 		fi
 	else
@@ -74,7 +74,7 @@ while :; do
 	# Início thread
 	(
 	# Verifica e salva informações do usuário.
-	grep -sqw ${message_chat_id[$id]} $PWD/users || echo "${message_chat_id[$id]} ${message_chat_first_name[$id]} ${message_chat_username[$id]:-null}" >> $PWD/users
+	grep -sqw ${message_chat_id[$id]} $HOME/YTMusicRobot/users || echo "${message_chat_id[$id]} ${message_chat_first_name[$id]} ${message_chat_username[$id]:-null}" >> $PWD/users
 
 
 	case ${message_entities_type[id]} in

@@ -1,6 +1,4 @@
-# YT_MUSIC Bot v1.0
-
-![Logo YouTube Music](youtube-music-logo.png)
+# YT-MUSIC Bot v1.5
 
 ## Nota
 
@@ -20,14 +18,14 @@ Para usufruir o conteúdo deste repositório, precisa-se está familiarizado com
 
 ## Instruções
 
-- [Sobre YT_MUSIC](#Sobre-YT_MUSIC)
+- [Sobre YT-MUSIC](#Sobre-YT-MUSIC)
 - [Configuração - youtube-dl](#Configuração---youtube-dl)
 - [Código-fonte](#Código-fonte)
 - [Informações do Desenvolvedor](#Informações-do-Desenvolvedor)
 
-## Sobre YT_MUSIC
+## Sobre YT-MUSIC
 
-**YT_MUSIC** é um bot escrito com a linguagem de programação Shell Script, construído com API não oficial **[ShellBot](https://github.com/shellscriptx/shellbot)** e programa linha de comando **[youtube-dl](https://github.com/ytdl-org/youtube-dl)**.  
+**YT-MUSIC** é um bot escrito com a linguagem de programação Shell Script, construído com API não oficial **[ShellBot](https://github.com/shellscriptx/shellbot)** e programa linha de comando **[youtube-dl](https://github.com/ytdl-org/youtube-dl)**.  
 Resumindo é um bot para Telegram que baixa áudios MP3 de alta qualidade de vídeos ou playlists do YouTube.
 
 ## Configuração - youtube-dl

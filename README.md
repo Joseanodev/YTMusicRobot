@@ -41,7 +41,7 @@ Para obter as configurações execute:
 
 Baixe o código-fonte deste repositório:
 
-	git clone https://github.com/Joseanodev/YTMusicRobot && cd YTMusicRobot
+	git clone https://github.com/Joseanodev/YTMusicRobot
 
 ## Informações do Desenvolvedor
 

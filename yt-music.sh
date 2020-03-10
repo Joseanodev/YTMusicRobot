@@ -36,7 +36,7 @@ function hello_bot()
 function download_url()
 {
 	local re_url
-	re_url='https?://w*\.?youtu\.?be(\.com)?/(watch\?v=|playlist\?list=)?([a-zA-Z0-9_-]+)'
+	re_url='https?://w*\.?youtu\.?be(\.com)?/(watch\?v=|playlist\?list=)?([a-zA-Z0-9_-]+)' # Padrão a ser condicionado
 	if [[ ${message_text[$id]} =~ $re_url ]]; then
 		temp_path=$(mktemp -d) && cd $temp_path
 		if audio="$(grep ${BASH_REMATCH[3]} $HOME/YTMusicRobot/audios)"; then

@@ -22,7 +22,7 @@ source ShellBot.sh
 bot_token=$(<.token)
 
 # Inicializando o bot
-ShellBot.init --token "$bot_token" --return map --monitor
+ShellBot.init --token "$bot_token" --return map --monitor --flush
 
 function get_user_info()
 {
@@ -72,7 +72,7 @@ while :; do
 	for id in $(ShellBot.ListUpdates); do
 	# Início thread
 	(
-	echo ${user_id[$id]}
+
 	# Gerenciar regras
 	ShellBot.manageRules --update_id $id
 

@@ -3,9 +3,9 @@
 #
 # Autor:	Joseano Sousa
 #
-# Versão:	v1.5
+# Versão:	v1.6
 #
-# Data:		10-03-2020
+# Data:		23-03-2020
 #
 #
 # Descrição:	Bot para Telegram feito em Shell.
@@ -19,50 +19,49 @@
 source ShellBot.sh
 
 # Token do bot
-bot_token="$(<.token)"
+bot_token=$(<.token)
 
 # Inicializando o bot
-ShellBot.init --token $bot_token --return map --monitor
+ShellBot.init --token "$bot_token" --return map --monitor
 
-function hello_bot()
+function get_user_info()
 {
-	local text
-	text="Olá, <b>${message_chat_first_name[$id]}</b>!\n\n"
-	text+="Me envie um <b>URL</b> de um vídeo ou playlist do YouTube. "
-	text+="Você pode utilizar o <code>@vid</code> para pesquisar um video ou compartilhar comigo direto do YouTube.\n\n"
-	[[ ${message_text[$id]} = "/start" ]] && ShellBot.sendMessage --chat_id ${message_chat_id[$id]} --text "$text" --parse_mode html
+	# Verifica e salva informações do usuário.
+	grep -sqw ${message_from_id[$id]} users || echo "${message_from_id[$id]} ${message_from_first_name[$id]} ${message_from_username[$id]:-null}" >> users
 }
-
+		
 function download_url()
 {
-	local re_url
-	re_url='https?://w*\.?youtu\.?be(\.com)?/(watch\?v=|playlist\?list=)?([a-zA-Z0-9_-]+)' # Padrão a ser condicionado
+	local re_url='https?://w*\.?youtu\.?be(\.com)?/(watch\?v=|playlist\?list=)?([a-zA-Z0-9_-]+)' # Padrão a ser condicionado
 	if [[ ${message_text[$id]} =~ $re_url ]]; then
 		temp_path=$(mktemp -d) && cd $temp_path
-		if audio="$(grep ${BASH_REMATCH[3]} $HOME/YTMusicRobot/audios)"; then
-			ShellBot.sendAudio --chat_id ${message_chat_id[$id]} --audio ${audio##* }
+		if audio="$(grep -- ${BASH_REMATCH[3]} $OLDPWD/audios)"; then
+			ShellBot.sendAudio --chat_id ${message_chat_id[$id]} --audio ${audio##* } --reply_to_message_id ${message_message_id[$id]}
 		elif [[ ${BASH_REMATCH[2]} = "playlist?list=" ]]; then
-			for audio_id in $(youtube-dl --ignore-config --ignore-errors --flat-playlist --get-id $BASH_REMATCH[3]); do
-				audio="$(grep ${BASH_REMATCH[3]} $HOME/YTMusicRobot/audios)" && ShellBot.sendAudio --chat_id ${message_chat_id[$id]} --audio ${audio##* } && continue
-				youtube-dl --config-location $HOME/YTMusicRobot/youtube-dl.conf -- $audio_id
-				audio_path="$(find $temp_path -name *$audio_id.mp3)"
+			for audio_id in $(youtube-dl --ignore-config --ignore-errors --flat-playlist --get-id -- $BASH_REMATCH[3]); do
+				audio="$(grep -- $audio_id $HOME/YTMusicRobot/audios)" && ShellBot.sendAudio --chat_id ${message_chat_id[$id]} --audio ${audio##* } --reply_to_message_id ${message_message_id[$id]} && continue
+				youtube-dl --config-location $OLDPWD/youtube-dl.conf -- $audio_id
+				audio_path=$(find $temp_path -name *$audio_id.mp3)
 				[[ -a $audio_path ]] || continue
-				ShellBot.sendAudio --chat_id ${message_chat_id[$id]} --audio @$audio_path
-				echo "$audio_id ${return[audio_file_id]}" >> $HOME/YTMusicRobot/audios
+				ShellBot.sendAudio --chat_id ${message_chat_id[$id]} --audio @$audio_path --reply_to_message_id ${message_message_id[$id]}
+				echo "$audio_id ${return[audio_file_id]}" >> $OLDPWD/audios
 			done
 			rm -fr $temp_path
 		else
 			audio_id="${BASH_REMATCH[3]}"
-			youtube-dl --config-location $HOME/YTMusicRobot/youtube-dl.conf "$BASH_REMATCH"
+			youtube-dl --config-location $OLDPWD/youtube-dl.conf "$BASH_REMATCH"
 			audio_path=@$(find $temp_path -name *$audio_id.mp3)
-			ShellBot.sendAudio --chat_id ${message_chat_id[$id]} --audio $audio_path
-			echo "$audio_id ${return[audio_file_id]}" >> $HOME/YTMusicRobot/audios
+			ShellBot.sendAudio --chat_id ${message_chat_id[$id]} --audio "$audio_path" --reply_to_message_id ${message_message_id[$id]}
+			echo "$audio_id ${return[audio_file_id]}" >> $OLDPWD/audios
 			rm -fr $temp_path
 		fi
-	else
-		ShellBot.sendMessage --chat_id ${message_chat_id[$id]} --text "*Erro:* URL inválida!" --parse_mode markdown
 	fi
 }
+
+# Definir regras de mensagens
+text='Olá, *${message_from_first_name}*!\n\nMe envie um *URL* de um vídeo ou playlist do YouTube. Você pode utilizar o `@vid` para pesquisar um video ou compartilhar comigo direto do YouTube.'
+ShellBot.setMessageRules --name "bem_vindo" --action get_user_info --command "/start" --chat_type "private|group|supergroup" --bot_reply_message "$text" --bot_parse_mode markdown --bot_action typing
+ShellBot.setMessageRules --name "url_de_download" --action download_url --text 'https?://w*\.?youtu\.?be(\.com)?/(watch\?v=|playlist\?list=)?[a-zA-Z0-9_-]+' --chat_type "private|group|supergroup"
 
 while :; do
 
@@ -73,14 +72,10 @@ while :; do
 	for id in $(ShellBot.ListUpdates); do
 	# Início thread
 	(
-	# Verifica e salva informações do usuário.
-	grep -sqw ${message_chat_id[$id]} $HOME/YTMusicRobot/users || echo "${message_chat_id[$id]} ${message_chat_first_name[$id]} ${message_chat_username[$id]:-null}" >> $PWD/users
+	echo ${user_id[$id]}
+	# Gerenciar regras
+	ShellBot.manageRules --update_id $id
 
-	# Analisa o tipo da mensagem recebida.
-	case ${message_entities_type[id]} in
-		url) download_url ;;
-		bot_command) hello_bot ;;
-	esac
 	) & # Utilize a thread se deseja que o bot responda a várias requisições simultâneas
 	done
 done

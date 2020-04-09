@@ -29,7 +29,7 @@ function get_user_info()
 	# Verifica e salva informações do usuário.
 	grep -sqw ${message_from_id[$id]} users || echo "${message_from_id[$id]} ${message_from_first_name[$id]} ${message_from_username[$id]:-null}" >> users
 }
-		
+
 function download_url()
 {
 	local re_url='https?://w*\.?youtu\.?be(\.com)?/(watch\?v=|playlist\?list=)?([a-zA-Z0-9_-]+)' # Padrão a ser condicionado
@@ -70,12 +70,12 @@ while :; do
 
 	# Lista o índice das atualizações
 	for id in $(ShellBot.ListUpdates); do
-	# Início thread
-	(
+		# Início thread
+		(
 
-	# Gerenciar regras
-	ShellBot.manageRules --update_id $id
+		# Gerenciar regras
+		ShellBot.manageRules --update_id $id
 
-	) & # Utilize a thread se deseja que o bot responda a várias requisições simultâneas
+		) & # Utilize a thread se deseja que o bot responda a várias requisições simultâneas
 	done
 done

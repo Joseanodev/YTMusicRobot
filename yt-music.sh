@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 #
 #
-# Author:	Joseano Sousa
+# Author:		Joseano Sousa
 #
-# Version:	v1.7
+# Version:		v1.7
 #
-# Date:		18:07 12 de abr de 2020
+# Date:			18:07 12 de abr de 2020
 #
 #
-# Description:	Bot para Telegram feito em Shell.
-#		Baixa áudios em alta qualidade de
-#		vídeos ou playlists do YouTube.
+# Description:		Bot para Telegram feito em Shell.
+#			Baixa áudios em alta qualidade de
+#			vídeos ou playlists do YouTube.
 #
-# Usage:	./yt-music.sh
+# Usage:		./yt-music.sh
 #
 
 # Importando API

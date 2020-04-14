@@ -12,7 +12,7 @@
 #		Baixa áudios em alta qualidade de
 #		vídeos ou playlists do YouTube.
 #
-# Usage:		./yt-music.sh
+# Usage:	./yt-music.sh
 #
 
 # Importando API

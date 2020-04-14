@@ -1,4 +1,4 @@
-# YT-MUSIC Bot v1.5
+# YT-MUSIC Bot v1.7
 
 ## Nota
 
@@ -37,11 +37,11 @@ O arquivo de configuração do programa **youtube-dl** é baixado junto ao códi
 
 Baixe o código-fonte deste repositório:
 
-	git clone https://github.com/Joseanodev/YTMusicRobot
+	git clone https://github.com/Joseanodev/YTMusicRobot && cd YTMusicRobot
 
 ## Informações do Desenvolvedor
 
-**Versão:** 1.5  
+**Versão:** 1.7  
 **Desenvolvedor:** Joseano Sousa  
 **E-mail:** joseanodev@gmail.com  
 **Telegram:** [@joseanodev](https://t.me/joseanodev)

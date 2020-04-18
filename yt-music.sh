@@ -93,12 +93,12 @@ while true; do
 
 	# Lista o índice das atualizações
 	for id in $(ShellBot.ListUpdates); do
-		# Início thread
-		(
+	# Início thread
+	(
 
-		# Gerenciar regras
-		ShellBot.manageRules --update_id $id
+	# Gerenciar regras
+	ShellBot.manageRules --update_id $id
 
-		) & # Utilize a thread se deseja que o bot responda a várias requisições simultâneas
+	) & # Utilize a thread se deseja que o bot responda a várias requisições simultâneas
 	done
 done

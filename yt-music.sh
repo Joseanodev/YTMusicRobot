@@ -5,7 +5,7 @@
 #
 # Version:		v1.7
 #
-# Date:			18:07 12 de abr de 2020
+# Date:			01:50 30 de abr de 2020
 #
 #
 # Description:		Bot para Telegram feito em Shell.
@@ -85,17 +85,13 @@ function url_parser()
 }
 
 # Definir regras de mensagens
-ShellBot.setMessageRules --name "bem_vindo" --action welcome --command "/start" --chat_type "private|group|supergroup"
+ShellBot.setMessageRules --name "bem_vindo" --action welcome --command "/start" --chat_type "private|group|supergroup" --entitie_type "bot_command"
 ShellBot.setMessageRules --name "url_de_download" --action url_parser --text 'https?://(w{3}\.)?youtu\.?be(\.com)?/(watch\?v=|playlist\?list=)?[a-zA-Z0-9_-]+' --chat_type "private|group|supergroup"
 
 while true; do
 
 	# Obtem as atualizações
-<<<<<<< HEAD
-	ShellBot.getUpdates --offset $(ShellBot.OffsetNext) --limit 100 --timeout 20 --allowed_updates '["message"]'
-=======
-	ShellBot.getUpdates --limit 100 --offset $(ShellBot.OffsetNext) --timeout 20 --allowed_updates '["message"]'
->>>>>>> 170d87150bfcd49378fd27a0902eabfe9e1b4632
+	ShellBot.getUpdates --offset $(ShellBot.OffsetNext) --limit 100 --timeout 20 --allowed_updates '["message", "inline_query", "chosen_inline_result", "callback_query"]'
 
 	# Lista o índice das atualizações
 	for id in $(ShellBot.ListUpdates); do

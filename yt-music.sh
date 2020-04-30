@@ -36,6 +36,7 @@ bot_token=$(<.token)
 ShellBot.init --token "$bot_token" --return map --monitor --flush
 
 
+# Bem-vindo(a)
 function welcome()
 {
 	# Verifica e salva informações do usuário.
@@ -47,6 +48,7 @@ function welcome()
 	ShellBot.sendMessage --chat_id ${message_chat_id[$id]} --text "$text" --parse_mode markdown
 }
 
+# Baixando URL
 function download_url()
 {
 	youtube-dl --config-location $OLDPWD/youtube-dl.conf -- ${audio_id:-$url_id}
@@ -57,7 +59,7 @@ function download_url()
 	fi
 }
 
-
+# Analisador URL
 function url_parser()
 {
 	local url_regex='https?://(w{3}\.)?youtu\.?be(\.com)?/(watch\?v=|playlist\?list=)?([a-zA-Z0-9_-]+)' # Padrão a ser condicionado
@@ -66,7 +68,7 @@ function url_parser()
 		temp_path=$(mktemp -d) && cd $temp_path
 		if audio="$(grep -- $url_id $OLDPWD/audios)"; then
 			ShellBot.sendAudio --chat_id ${message_chat_id[$id]} --audio ${audio##* } --reply_to_message_id ${message_message_id[$id]}
-		elif [[ ${BASH_REMATCH[3]} == playlist?list= ]]; then
+		elif [[ ${BASH_REMATCH[3]} != "playlist?list=" ]]; then
 			for audio_id in $(youtube-dl --ignore-config --ignore-errors --flat-playlist --get-id -- $url_id); do
 				if audio="$(grep -- $audio_id $HOME/YTMusicRobot/audios)"; then
 					ShellBot.sendAudio --chat_id ${message_chat_id[$id]} --audio ${audio##* } --reply_to_message_id ${message_message_id[$id]}
@@ -89,16 +91,16 @@ ShellBot.setMessageRules --name "url_de_download" --action url_parser --text 'ht
 while true; do
 
 	# Obtem as atualizações
-	ShellBot.getUpdates --limit 100 --offset $(ShellBot.OffsetNext) --timeout 20
+	ShellBot.getUpdates --offset $(ShellBot.OffsetNext) --limit 100 --timeout 20 --allowed_updates '["message"]'
 
 	# Lista o índice das atualizações
 	for id in $(ShellBot.ListUpdates); do
-		# Início thread
-		(
+	# Início thread
+	(
 
-		# Gerenciar regras
-		ShellBot.manageRules --update_id $id
+	# Gerenciar regras
+	ShellBot.manageRules --update_id $id
 
-		) & # Utilize a thread se deseja que o bot responda a várias requisições simultâneas
+	) & # Utilize a thread se deseja que o bot responda a várias requisições simultâneas
 	done
 done

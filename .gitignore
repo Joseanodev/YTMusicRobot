@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Ignora token
 .token
 
@@ -5,3 +6,8 @@
 -
 users
 audios
+=======
+-
+.token
+users
+>>>>>>> 170d87150bfcd49378fd27a0902eabfe9e1b4632

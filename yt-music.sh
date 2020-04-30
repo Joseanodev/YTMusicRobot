@@ -91,7 +91,11 @@ ShellBot.setMessageRules --name "url_de_download" --action url_parser --text 'ht
 while true; do
 
 	# Obtem as atualizações
+<<<<<<< HEAD
 	ShellBot.getUpdates --offset $(ShellBot.OffsetNext) --limit 100 --timeout 20 --allowed_updates '["message"]'
+=======
+	ShellBot.getUpdates --limit 100 --offset $(ShellBot.OffsetNext) --timeout 20 --allowed_updates '["message"]'
+>>>>>>> 170d87150bfcd49378fd27a0902eabfe9e1b4632
 
 	# Lista o índice das atualizações
 	for id in $(ShellBot.ListUpdates); do

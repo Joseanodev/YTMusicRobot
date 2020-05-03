@@ -33,7 +33,7 @@ done
 bot_token=$(<.token)
 
 # Inicializando o bot
-ShellBot.init --token "$bot_token" --return map --monitor --flush
+ShellBot.init --token "$bot_token" --return map # --monitor --flush
 
 
 # Bem-vindo(a)
@@ -54,7 +54,7 @@ function download_url()
 	youtube-dl --config-location $OLDPWD/youtube-dl.conf -- ${audio_id:-$url_id}
 	audio_path=$(find $temp_path -name *${audio_id:-$url_id}.mp3)
 	if [[ -a $audio_path ]]; then
-		ShellBot.sendAudio --chat_id ${message_chat_id[$id]} --audio @$audio_path --reply_to_message_id ${message_message_id[$id]}
+		ShellBot.sendAudio --chat_id ${message_chat_id[$id]} --audio "@$audio_path" --reply_to_message_id ${message_message_id[$id]}
 		echo "${audio_id:-$url_id} ${return[audio_file_id]}" >> $OLDPWD/audios
 	fi
 }
@@ -85,8 +85,8 @@ function url_parser()
 }
 
 # Definir regras de mensagens
-ShellBot.setMessageRules --name "bem_vindo" --action welcome --command "/start" --chat_type "private|group|supergroup" --entitie_type "bot_command"
-ShellBot.setMessageRules --name "url_de_download" --action url_parser --text 'https?://(w{3}\.)?youtu\.?be(\.com)?/(watch\?v=|playlist\?list=)?[a-zA-Z0-9_-]+' --chat_type "private|group|supergroup"
+ShellBot.setMessageRules --name "bem_vindo" --action welcome --command "/start" --chat_type "private|group|supergroup"
+ShellBot.setMessageRules --name "url_de_download" --action url_parser --text 'https?://(w{3}\.)?youtu\.?be(\.com)?/(watch\?v=|playlist\?list=)?[a-zA-Z0-9_-]+' --chat_type "private|group|supergroup" --entitie_type "url"
 
 while true; do
 

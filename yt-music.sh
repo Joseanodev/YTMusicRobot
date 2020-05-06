@@ -21,8 +21,8 @@ source ShellBot.sh
 # Verificador e validador de token
 until [[ -r .token ]]; do
 	read -p "Digite seu token: "
-	validate_token=$(curl --silent https://api.telegram.org/bot$REPLY/getMe | jq '.ok')
-	if $validate_token; then
+	token_status=$(curl --silent "https://api.telegram.org/bot$REPLY/getMe" | jq '.ok')
+	if $token_status; then
 		echo "$REPLY" > .token
 	else
 		echo "Erro: digite um token válido." 1>&2
@@ -33,26 +33,26 @@ done
 bot_token=$(<.token)
 
 # Inicializando o bot
-ShellBot.init --token "$bot_token" --return map # --monitor --flush
+ShellBot.init --token "$bot_token" --return "map" --monitor --flush
 
 
 # Bem-vindo(a)
 function welcome()
 {
 	# Verifica e salva informações do usuário.
-	grep -sqw ${message_from_id[$id]} users || echo "${message_from_id[$id]} ${message_from_first_name[$id]} ${message_from_username[$id]:-null}" >> users
+	grep --silent --quiet --word-regexp "${message_from_id[$id]}" users || echo "${message_from_id[$id]} ${message_from_first_name[$id]} ${message_from_username[$id]:-null}" >> users
 	
 	# Mensagem de boas-vindas.
 	local text="Olá, *${message_from_first_name[$id]}*!\n\nMe envie um *URL* de um vídeo ou playlist do YouTube. Você pode utilizar o \`@vid\` para pesquisar um video ou compartilhar comigo direto do YouTube."
-	ShellBot.sendChatAction --chat_id ${message_chat_id[$id]} --action typing
-	ShellBot.sendMessage --chat_id ${message_chat_id[$id]} --text "$text" --parse_mode markdown
+	ShellBot.sendChatAction --chat_id ${message_chat_id[$id]} --action "typing"
+	ShellBot.sendMessage --chat_id ${message_chat_id[$id]} --text "$text" --parse_mode "markdown"
 }
 
 # Baixando URL
 function download_url()
 {
-	youtube-dl --config-location $OLDPWD/youtube-dl.conf -- ${audio_id:-$url_id}
-	audio_path=$(find $temp_path -name *${audio_id:-$url_id}.mp3)
+	youtube-dl --config-location $OLDPWD/youtube-dl.conf -- "${audio_id:-$url_id}"
+	audio_path=$(find $temp_path -name "*${audio_id:-$url_id}.mp3")
 	if [[ -a $audio_path ]]; then
 		ShellBot.sendAudio --chat_id ${message_chat_id[$id]} --audio "@$audio_path" --reply_to_message_id ${message_message_id[$id]}
 		echo "${audio_id:-$url_id} ${return[audio_file_id]}" >> $OLDPWD/audios
@@ -62,16 +62,16 @@ function download_url()
 # Analisador URL
 function url_parser()
 {
-	local url_regex='https?://(w{3}\.)?youtu\.?be(\.com)?/(watch\?v=|playlist\?list=)?([a-zA-Z0-9_-]+)' # Padrão a ser condicionado
+	local url_regex="https?://(www\.)?youtu\.?be(\.com)?/((watch\?v|playlist\?list)=)?([a-zA-Z0-9_-]+)" # RegEx URL
 	if [[ ${message_text[$id]} =~ $url_regex ]]; then
-		url_id="${BASH_REMATCH[4]}"
+		url_id="${BASH_REMATCH[5]}"
 		temp_path=$(mktemp -d) && cd $temp_path
-		if audio="$(grep -- $url_id $OLDPWD/audios)"; then
-			ShellBot.sendAudio --chat_id ${message_chat_id[$id]} --audio ${audio##* } --reply_to_message_id ${message_message_id[$id]}
-		elif [[ ${BASH_REMATCH[3]} != "playlist?list=" ]]; then
-			for audio_id in $(youtube-dl --ignore-config --ignore-errors --flat-playlist --get-id -- $url_id); do
-				if audio="$(grep -- $audio_id $HOME/YTMusicRobot/audios)"; then
-					ShellBot.sendAudio --chat_id ${message_chat_id[$id]} --audio ${audio##* } --reply_to_message_id ${message_message_id[$id]}
+		if audio="$(grep -- "$url_id" $OLDPWD/audios)"; then
+			ShellBot.sendAudio --chat_id ${message_chat_id[$id]} --audio "${audio##* }" --reply_to_message_id ${message_message_id[$id]}
+		elif [[ ${BASH_REMATCH[4]} == "playlist?list" ]]; then
+			for audio_id in $(youtube-dl --ignore-config --ignore-errors --flat-playlist --get-id -- "$url_id"); do
+				if audio="$(grep -- "$audio_id" $HOME/YTMusicRobot/audios)"; then
+					ShellBot.sendAudio --chat_id ${message_chat_id[$id]} --audio "${audio##* }" --reply_to_message_id ${message_message_id[$id]}
 				else
 					download_url
 				fi
@@ -86,7 +86,7 @@ function url_parser()
 
 # Definir regras de mensagens
 ShellBot.setMessageRules --name "bem_vindo" --action welcome --command "/start" --chat_type "private|group|supergroup"
-ShellBot.setMessageRules --name "url_de_download" --action url_parser --text 'https?://(w{3}\.)?youtu\.?be(\.com)?/(watch\?v=|playlist\?list=)?[a-zA-Z0-9_-]+' --chat_type "private|group|supergroup" --entitie_type "url"
+ShellBot.setMessageRules --name "url_de_download" --action url_parser --text "https?://(www\.)?youtu\.?be(\.com)?/((watch\?v|playlist\?list)=)?[a-zA-Z0-9_-]+" --chat_type "private|group|supergroup" --entitie_type "url"
 
 while true; do
 

@@ -52,7 +52,7 @@ function welcome()
 function download_url()
 {
 	youtube-dl --config-location $OLDPWD/youtube-dl.conf -- "${audio_id:-$url_id}"
-	audio_path=$(find $temp_path -name "*${audio_id:-$url_id}.mp3")
+	audio_path=$(find $temp_path -name *${audio_id:-$url_id}.mp3)
 	if [[ -a $audio_path ]]; then
 		ShellBot.sendAudio --chat_id ${message_chat_id[$id]} --audio "@$audio_path" --reply_to_message_id ${message_message_id[$id]}
 		echo "${audio_id:-$url_id} ${return[audio_file_id]}" >> $OLDPWD/audios
